@@ -4,7 +4,7 @@
 # ╚═══════════════════════════════════════════════════════════╝
 
 # ── App identity ──────────────────────────────────────────────
-DEVELOPER = "Strykey"
+DEVELOPER = "Strykey / Daniel Pires"
 
 # ── GitHub repo (for auto-update in .exe builds) ─────────────
 GITHUB_REPO_OWNER = "DanielPires2000"
