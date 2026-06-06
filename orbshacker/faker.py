@@ -73,7 +73,7 @@ class GameFaker:
     def __init__(self):
         self._frozen = _is_frozen()
         self._source_exe = _find_source_exe()
-        self.desktop_path = Path.home() / "Desktop"
+        self.chosen_path = config.CHOSEN_FOLDER
 
     def copy_exe_to(self, target_path: Path) -> None:
         """Copy the faker executable to *target_path*.
@@ -94,7 +94,7 @@ class GameFaker:
         if not exe_name.lower().endswith('.exe'):
             exe_name += '.exe'
         exe_name = exe_name.replace('\\', '/')
-        target_path = self.desktop_path / config.FAKE_EXE_DIR / exe_name
+        target_path = self.chosen_path / config.FAKE_EXE_DIR / exe_name
         try:
             loading_animation(f"Creating {exe_name.split('/')[-1]}", 0.8)
             self.copy_exe_to(target_path)
@@ -163,7 +163,7 @@ def manual_mode(faker: GameFaker) -> None:
 
     print(f"\n{Colors.BOLD}Summary:{Colors.RESET}")
     print(f"  Executable: {Colors.CYAN}{exe_name}{Colors.RESET}")
-    print(f"  Path: {Colors.GRAY}{faker.desktop_path / config.FAKE_EXE_DIR / exe_name}{Colors.RESET}")
+    print(f"  Path: {Colors.GRAY}{faker.chosen_path / config.FAKE_EXE_DIR / exe_name}{Colors.RESET}")
 
     if not ask_confirm():
         print_color("\n[!] Operation cancelled", Colors.YELLOW)

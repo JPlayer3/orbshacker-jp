@@ -9,6 +9,7 @@ and are NOT exposed in settings.py.
 
 import importlib
 import sys
+from pathlib import Path
 
 # ── Load user settings (root-level settings.py) ──────────────────────────────
 # This lets the user edit a single, visible file at the project root.
@@ -62,3 +63,4 @@ SLEEP_SHORT        = _get("SLEEP_SHORT",        1.0)
 SLEEP_LONG         = _get("SLEEP_LONG",         2.0)
 FAKE_EXE_DIR       = _get("FAKE_EXE_DIR",       "Win64")
 MAX_SEARCH_RESULTS = _get("MAX_SEARCH_RESULTS", 20)
+CHOSEN_FOLDER      = _get("CHOSEN_FOLDER",      Path.home() / "Desktop")

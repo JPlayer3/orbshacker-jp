@@ -1,3 +1,4 @@
+from pathlib import Path
 # ╔═══════════════════════════════════════════════════════════╗
 # ║             ORBSHACKER – USER SETTINGS                   ║
 # ║  Edit values here. The app reads from this file.         ║
@@ -11,7 +12,7 @@ DEVELOPER = "Strykey"
 GITHUB_REPO_OWNER = "Strykey"
 GITHUB_REPO_NAME  = "orbshacker"
 
-# ── Fake exe output folder (created on Desktop) ─────────────
+# ── Fake exe output folder (created on CHOSEN_FOLDER) ─────────────
 FAKE_EXE_DIR = "Win64"
 
 # ── Timings (seconds) ────────────────────────────────────────
@@ -20,3 +21,6 @@ SLEEP_LONG  = 2.0
 
 # ── Search ────────────────────────────────────────────────────
 MAX_SEARCH_RESULTS = 20
+
+# ── Chosen folder for orbshacker exe files (defaults to Desktop) ────────
+CHOSEN_FOLDER = Path.home() / "Desktop"
