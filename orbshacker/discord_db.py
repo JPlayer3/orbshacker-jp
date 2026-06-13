@@ -210,7 +210,7 @@ def database_mode(db: DiscordGamesDB, faker: GameFaker) -> None:
         print(f"  {Colors.GRAY}Other executables: {', '.join(all_exes[1:3])}{Colors.RESET}")
         if len(all_exes) > 3:
             print(f"  {Colors.GRAY}(+{len(all_exes) - 3} more executables available){Colors.RESET}")
-    print(f"  Path: {Colors.GRAY}{faker.desktop_path / config.FAKE_EXE_DIR / exe_name}{Colors.RESET}")
+    print(f"  Path: {Colors.GRAY}{faker.chosen_path / config.FAKE_EXE_DIR / exe_name}{Colors.RESET}")
 
     if not ask_confirm():
         print_color("\n[!] Operation cancelled", Colors.YELLOW)

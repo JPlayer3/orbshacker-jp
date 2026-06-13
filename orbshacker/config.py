@@ -7,8 +7,10 @@ Internal-only constants (API URLs, headers, timeouts) live here
 and are NOT exposed in settings.py.
 """
 
-import subprocess
+import importlib
+import sys
 from pathlib import Path
+import subprocess
 from typing import TypeVar, cast
 
 from . import _version as _build_version
@@ -69,7 +71,7 @@ VERSION   = _resolve_version()
 DEVELOPER = _get("DEVELOPER", "Strykey")
 
 # ── GitHub repo ───────────────────────────────────────────────────────────────
-GITHUB_REPO_OWNER = _get("GITHUB_REPO_OWNER", "DanielPires2000")
+GITHUB_REPO_OWNER = _get("GITHUB_REPO_OWNER", "Strykey")
 GITHUB_REPO_NAME  = _get("GITHUB_REPO_NAME",  "orbshacker")
 REPO_URL          = f"https://github.com/{GITHUB_REPO_OWNER}/{GITHUB_REPO_NAME}"
 
@@ -103,3 +105,4 @@ SLEEP_SHORT        = _get("SLEEP_SHORT",        1.0)
 SLEEP_LONG         = _get("SLEEP_LONG",         2.0)
 FAKE_EXE_DIR       = _get("FAKE_EXE_DIR",       "Win64")
 MAX_SEARCH_RESULTS = _get("MAX_SEARCH_RESULTS", 20)
+CHOSEN_FOLDER      = _get("CHOSEN_FOLDER",      Path.home() / "Desktop")
