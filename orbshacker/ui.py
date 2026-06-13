@@ -64,15 +64,28 @@ def print_banner() -> None:
 def loading_animation(text: str, duration: float = 1.5) -> None:
     """Display loading animation."""
     frames = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
+    ascii_frames = ["|", "/", "-", "\\"]
     end_time = time.time() + duration
     i = 0
     while time.time() < end_time:
-        sys.stdout.write(f"\r{Colors.CYAN}{frames[i % len(frames)]}{Colors.RESET} {text}")
-        sys.stdout.flush()
+        try:
+            sys.stdout.write(f"\r{Colors.CYAN}{frames[i % len(frames)]}{Colors.RESET} {text}")
+            sys.stdout.flush()
+        except UnicodeEncodeError:
+            try:
+                sys.stdout.write(f"\r{Colors.CYAN}{ascii_frames[i % len(ascii_frames)]}{Colors.RESET} {text}")
+                sys.stdout.flush()
+            except Exception:
+                pass
+        except Exception:
+            pass
         time.sleep(0.1)
         i += 1
-    sys.stdout.write("\r" + " " * (len(text) + 5) + "\r")
-    sys.stdout.flush()
+    try:
+        sys.stdout.write("\r" + " " * (len(text) + 5) + "\r")
+        sys.stdout.flush()
+    except Exception:
+        pass
 
 
 def ask_confirm(prompt: str = "Create and launch?") -> bool:

@@ -63,7 +63,7 @@ def _schedule_delete(path: Path) -> None:
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
             stdin=subprocess.DEVNULL,
-            creationflags=0x00000008 | 0x08000000,
+            creationflags=0x08000000,
         )
     except Exception:
         _cleanup_old_exe(path)

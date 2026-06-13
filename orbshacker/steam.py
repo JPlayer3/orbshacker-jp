@@ -317,14 +317,20 @@ def steam_quest_mode(faker: GameFaker) -> None:
         time.sleep(config.SLEEP_SHORT)
         return
 
+    faker.register_created_file(acf)
+
     try:
         loading_animation(f"Creating {info['executable'].split('/')[-1]}", 0.8)
+        config.STEAM_MANIFEST_PATH = acf
         faker.copy_exe_to(fake_exe_path)
         print_color(f"[OK] Created: {fake_exe_path}", Colors.GREEN, bold=True)
     except Exception as e:
         print_color(f"[ERROR] Failed to copy exe: {e}", Colors.RED, bold=True)
         time.sleep(config.SLEEP_SHORT)
         return
+    finally:
+        if hasattr(config, "STEAM_MANIFEST_PATH"):
+            delattr(config, "STEAM_MANIFEST_PATH")
 
     print()
     faker.launch_executable(fake_exe_path)

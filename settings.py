@@ -4,22 +4,11 @@ from pathlib import Path
 # ║  Edit values here. The app reads from this file.         ║
 # ╚═══════════════════════════════════════════════════════════╝
 
-# ── App identity ──────────────────────────────────────────────
-DEVELOPER = "Strykey / Daniel Pires"
-
-# ── GitHub repo (for auto-update in .exe builds) ─────────────
-GITHUB_REPO_OWNER = "DanielPires2000"
-GITHUB_REPO_NAME  = "orbshacker"
-
-# ── Fake exe output folder (created on CHOSEN_FOLDER) ─────────────
-FAKE_EXE_DIR = "Win64"
-
-# ── Timings (seconds) ────────────────────────────────────────
-SLEEP_SHORT = 1.0
-SLEEP_LONG  = 2.0
-
-# ── Search ────────────────────────────────────────────────────
-MAX_SEARCH_RESULTS = 20
-
-# ── Chosen folder for orbshacker exe files (defaults to Desktop) ────────
+# ── Destination folder for faked executables (defaults to Desktop) ──
 CHOSEN_FOLDER = Path.home() / "Desktop"
+
+# ── Automatically delete faked executables and processes on exit ──
+AUTO_DELETE = False
+
+# ── Timer duration (in minutes) – Discord quests normally require 15 minutes ──
+TIMER_MINUTES = 15

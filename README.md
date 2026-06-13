@@ -4,10 +4,10 @@
 <br/>
 
 [![Python](https://img.shields.io/badge/Python-3.7+-3572A5?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![Platform](https://img.shields.io/badge/Platform-Windows%20Only-555555?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/strykey/orbshacker)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20Only-555555?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/DanielPires2000/orbshacker)
 [![Discord](https://img.shields.io/badge/Discord-Game%20Spoofer-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com)
 [![License](https://img.shields.io/badge/License-GPL%20v3-c0392b?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](./LICENSE)
-[![Version](https://img.shields.io/badge/Version-2.1.0-4ade80?style=for-the-badge&logo=semanticrelease&logoColor=white)](https://github.com/strykey/orbshacker/releases)
+[![Version](https://img.shields.io/github/v/release/DanielPires2000/orbshacker?style=for-the-badge&logo=semanticrelease&color=4ade80&logoColor=white)](https://github.com/DanielPires2000/orbshacker/releases)
 
 <br/>
 
@@ -54,6 +54,10 @@ You search for the game by name directly inside the tool. The tool fetches the g
 
 **Automatic Game Detection** pulls the latest detectable game list from Discord's official API. Smart search lets you find games by name or abbreviation PUBG, LoL, CSGO. Auto-launch handles everything in the background.
 
+**Self-Executing Timer & Embedded Config** builds faked game processes (renamed copies of the spoofer executable) that directly run the countdown timer when double-clicked by the user, with custom durations and auto-delete settings embedded directly inside the binary. No console windows are allocated for the faked processes.
+
+**Automatic Self-Destruction (`AUTO_DELETE`)** cleans up all faked executables, parent folders, and generated Steam manifests in the background once the countdown timer finishes.
+
 **Multi-Game Support** lets you run multiple fake processes simultaneously, completing all orb quests at once. Launch a game, press Enter, pick another, repeat. Each process runs independently and Discord sees all of them.
 
 **Backup Database** falls back to a GitHub archive if Discord's API is unavailable, so the tool keeps working even when the primary source is down.
@@ -83,12 +87,10 @@ Python 3.7 or higher, Windows only. Internet connection for database fetching. D
 ## Installation
 
 ```bash
-git clone https://github.com/strykey/orbshacker.git
+git clone https://github.com/DanielPires2000/orbshacker.git
 cd orbshacker
 pip install -r requirements.txt
 ```
-
-Place `exe.exe` in the project root directory. This is the base executable that gets copied and renamed for each fake process.
 
 <br/>
 
@@ -124,7 +126,9 @@ Launch the tool. Select your first game. After the process is launched, press En
 
 ## How it works
 
-The tool connects to Discord's official API (`/api/v9/applications/detectable`) to get the live game list. It extracts the exact process name Discord expects for each game. It copies `exe.exe` to `Desktop/Win64/`, renames the copy to match the game's executable name, and launches it in the background. The process stays running until you close it. Discord keeps detecting it for as long as it runs.
+The tool connects to Discord's official API (`/api/v9/applications/detectable`) to get the live game list. It extracts the exact process name Discord expects for each game. It copies the spoofer executable (or base Python interpreter in source mode) to the configured folder (defaults to `Desktop/Win64/`), renames it to match the game's executable name, and bakes the active configuration directly inside it.
+
+When the faked game executable runs, it acts as a standalone countdown timer with its settings embedded. When the countdown completes, it automatically triggers a background self-destruction script (if `AUTO_DELETE` is enabled) to delete the faked files and empty parent directories.
 
 Steam Quest Mode adds a layer: it generates a fake `appmanifest_<appid>.acf` in `steamapps/` and places the executable in `steamapps/common/<game>/`, satisfying Discord's additional manifest check for games like Marathon or Toxic Commando.
 
@@ -192,8 +196,8 @@ made with questionable life choices by **Strykey**
 
 <br/>
 
-[![GitHub stars](https://img.shields.io/github/stars/strykey/orbshacker?style=for-the-badge&color=4ade80&labelColor=1a1a1a)](https://github.com/strykey/orbshacker/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/strykey/orbshacker?style=for-the-badge&color=4ade80&labelColor=1a1a1a)](https://github.com/strykey/orbshacker/network)
+[![GitHub stars](https://img.shields.io/github/stars/DanielPires2000/orbshacker?style=for-the-badge&color=4ade80&labelColor=1a1a1a)](https://github.com/DanielPires2000/orbshacker/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/DanielPires2000/orbshacker?style=for-the-badge&color=4ade80&labelColor=1a1a1a)](https://github.com/DanielPires2000/orbshacker/network)
 
 <br/>
 
