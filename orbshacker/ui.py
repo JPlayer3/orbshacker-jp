@@ -21,13 +21,13 @@ class Colors:
     GRAY    = '\033[90m'
 
 
-def print_color(text, color=Colors.WHITE, bold=False):
+def print_color(text: str, color: str = Colors.WHITE, bold: bool = False) -> None:
     """Print colored text."""
     style = Colors.BOLD if bold else ''
     print(f"{style}{color}{text}{Colors.RESET}")
 
 
-def print_boxed_title(title, width=50, color=Colors.CYAN):
+def print_boxed_title(title: str, width: int = 50, color: str = Colors.CYAN) -> None:
     """Print a boxed title with ASCII borders."""
     border = f"{Colors.BOLD}{color}{'+' + '-' * (width - 2) + '+'}{Colors.RESET}"
     title_padding = (width - len(title) - 4) // 2
@@ -43,7 +43,7 @@ def print_boxed_title(title, width=50, color=Colors.CYAN):
     print(f"{border}\n")
 
 
-def print_banner():
+def print_banner() -> None:
     """Display ASCII banner."""
     banner = f"""
 {Colors.CYAN}{Colors.BOLD}
@@ -61,27 +61,40 @@ def print_banner():
     print(banner)
 
 
-def loading_animation(text, duration=1.5):
+def loading_animation(text: str, duration: float = 1.5) -> None:
     """Display loading animation."""
     frames = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
+    ascii_frames = ["|", "/", "-", "\\"]
     end_time = time.time() + duration
     i = 0
     while time.time() < end_time:
-        sys.stdout.write(f"\r{Colors.CYAN}{frames[i % len(frames)]}{Colors.RESET} {text}")
-        sys.stdout.flush()
+        try:
+            sys.stdout.write(f"\r{Colors.CYAN}{frames[i % len(frames)]}{Colors.RESET} {text}")
+            sys.stdout.flush()
+        except UnicodeEncodeError:
+            try:
+                sys.stdout.write(f"\r{Colors.CYAN}{ascii_frames[i % len(ascii_frames)]}{Colors.RESET} {text}")
+                sys.stdout.flush()
+            except Exception:
+                pass
+        except Exception:
+            pass
         time.sleep(0.1)
         i += 1
-    sys.stdout.write("\r" + " " * (len(text) + 5) + "\r")
-    sys.stdout.flush()
+    try:
+        sys.stdout.write("\r" + " " * (len(text) + 5) + "\r")
+        sys.stdout.flush()
+    except Exception:
+        pass
 
 
-def ask_confirm(prompt="Create and launch?") -> bool:
+def ask_confirm(prompt: str = "Create and launch?") -> bool:
     """Ask a Y/n confirmation question. Returns True if user confirms."""
     answer = input(f"\n{Colors.BOLD}{prompt}{Colors.RESET} [Y/n]: ").strip().lower()
     return answer in ('', 'y', 'yes')
 
 
-def print_menu():
+def print_menu() -> None:
     """Display main menu."""
     print_boxed_title("MAIN MENU", width=50, color=Colors.CYAN)
     print(f"  {Colors.BOLD}{Colors.GREEN}1.{Colors.RESET} Search Discord database (Official API)")
@@ -91,7 +104,7 @@ def print_menu():
     print(f"  {Colors.BOLD}{Colors.RED}5.{Colors.RESET} Exit\n")
 
 
-def show_credits():
+def show_credits() -> None:
     """Display credits."""
     print_boxed_title("CREDITS", width=65, color=Colors.CYAN)
     credits_text = f"""
