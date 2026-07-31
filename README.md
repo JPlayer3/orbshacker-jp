@@ -11,11 +11,11 @@
 
 <br/>
 
-*Because who has time to install 500GB of games just for some orbs.*
+*だって、オーブのためだけに500GBのゲームをインストールする時間なんてないでしょ。*
 
 <br/>
 
-[Get Started](#installation) &nbsp;·&nbsp; [How it works](#how-it-works) &nbsp;·&nbsp; [Steam Mode](#steam-quest-mode) &nbsp;·&nbsp; [Usage](#usage) &nbsp;·&nbsp; [Structure](#project-structure) &nbsp;·&nbsp; [Legal](#legal-notice)
+[使い方](#installation) &nbsp;·&nbsp; [仕組み](#how-it-works) &nbsp;·&nbsp; [Steamモード](#steam-quest-mode) &nbsp;·&nbsp; [使用方法](#usage) &nbsp;·&nbsp; [構成](#project-structure) &nbsp;·&nbsp; [法的注意](#legal-notice)
 
 </div>
 
@@ -25,66 +25,66 @@
 <img width="340" alt="image" src="https://github.com/user-attachments/assets/1db237b0-2f57-428f-a004-d707f98a416e" style="border-radius: 16px"/>
 </div>
 
-## What is this
+## これは何か
 
-orbshacker is a Windows tool that creates fake game processes for Discord Orb quests without installing the actual games. It reads Discord's own public API to get the exact process names Discord expects, copies a base executable, renames it, and launches it in the background. Discord scans your process list, sees what it's looking for, and marks the quest as active.
+orbshacker は、実際のゲームをインストールせずに Discord Orb クエスト向けの偽のゲームプロセスを作成する Windows ツールです。Discord の公開 API から Discord が期待する正確なプロセス名を取得し、ベース実行ファイルをコピーしてリネームし、バックグラウンドで起動します。Discord はプロセス一覧をスキャンし、必要なプロセスを見つけるとクエストを有効化します。
 
-No client modification. No code injection. No suspicious network traffic. Just a process name sitting in your task list, which is all Discord ever checks.
+クライアント改変なし。コード注入なし。怪しいネットワーク通信なし。Discord が確認するのはタスクリスト上のプロセス名だけです。
 
-> **Educational purposes only.** This tool is provided to study how Discord's game detection system works and to explore process manipulation techniques. Use at your own risk and in compliance with all applicable terms of service.
+> **教育目的のみ。** このツールは Discord のゲーム検出システムの仕組みを学び、プロセス操作技術を調査するために提供されています。自己責任で、該当する利用規約に従って使用してください。
 
 <br/>
 
 ## 🚨 Steam Quest Mode
 
-Some games use a more advanced detection method. Discord doesn't just check the process name it also verifies that Steam has registered the game as downloading. Standard spoofing doesn't work for those. Steam Quest Mode does.
+一部のゲームは、より高度な検出方法を使っています。Discord はプロセス名だけでなく、Steam がそのゲームのダウンロードを登録済みかどうかも確認します。通常のスポーフィングでは動作しません。Steam Quest Mode なら対応します。
 
-### How it works
+### 仕組み
 
-You search for the game by name directly inside the tool. The tool fetches the game's metadata from the SteamCMD public API install directory, executable path, depot info and retrieves your Steam ID automatically from the Windows registry. It generates a fake `appmanifest_<appid>.acf` file in your `steamapps/` folder, the exact file Steam creates when a download is in progress, with realistic values (`StateFlags 1026`, `LastOwner`, `StagedDepots`, etc.). The fake executable goes directly into `steamapps/common/<game>/`. Discord scans the folder, finds the manifest, sees the process running, and validates the quest. Cleans up after itself when you're done.
+ツール内でゲーム名を直接検索します。ツールは SteamCMD の公開 API からメタデータを取得し、インストール先ディレクトリ、実行ファイルパス、デポ情報を読み取ります。さらに、Windows レジストリから自動的に Steam ID を取得します。`steamapps/` フォルダに、Steam がダウンロード中に作成するのと同じ形式の偽 `appmanifest_<appid>.acf` ファイルを生成し、`StateFlags 1026`、`LastOwner`、`StagedDepots` などの現実的な値を入れます。偽の実行ファイルは `steamapps/common/<game>/` に直接置かれます。Discord はフォルダをスキャンし、マニフェストを検出し、プロセスが動作していると判断してクエストを有効にします。終了後は自動でクリーンアップします。
 
-**Supported:**
-`Any game requiring a Steam manifest` &nbsp; `Fully automatic, no manual AppID lookup` &nbsp; `Uses your real Steam ID` &nbsp; `Searches demos and full games separately` &nbsp; `Auto-cleanup on exit`
+**対応:**
+`Steam マニフェストを必要とするゲームすべて` &nbsp; `完全自動、手動 AppID 検索不要` &nbsp; `実際の Steam ID を使用` &nbsp; `デモとフルゲームを別々に検索` &nbsp; `終了時に自動クリーンアップ`
 
-> **Tip:** If a quest targets a demo, search for `"Toxic Commando Demo"` instead of `"Toxic Commando"`. They have different AppIDs and the wrong one won't trigger the quest.
-
-<br/>
-
-## Features
-
-**Automatic Game Detection** pulls the latest detectable game list from Discord's official API. Smart search lets you find games by name or abbreviation PUBG, LoL, CSGO. Auto-launch handles everything in the background.
-
-**Self-Executing Timer & Embedded Config** builds faked game processes (renamed copies of the spoofer executable) that directly run the countdown timer when double-clicked by the user, with custom durations and auto-delete settings embedded directly inside the binary. No console windows are allocated for the faked processes.
-
-**Automatic Self-Destruction (`AUTO_DELETE`)** cleans up all faked executables, parent folders, and generated Steam manifests in the background once the countdown timer finishes.
-
-**Multi-Game Support** lets you run multiple fake processes simultaneously, completing all orb quests at once. Launch a game, press Enter, pick another, repeat. Each process runs independently and Discord sees all of them.
-
-**Backup Database** falls back to a GitHub archive if Discord's API is unavailable, so the tool keeps working even when the primary source is down.
-
-**Manual Mode** supports custom executable names if you need to spoof something not in the database.
-
-**Beautiful Interface** is a colored terminal UI with loading animations, because plain text is boring.
+> **ヒント:** クエストがデモを対象としている場合は、`"Toxic Commando Demo"` を検索してください。`"Toxic Commando"` では異なる AppID となり、クエストが発動しません。
 
 <br/>
 
-## Why this method works
+## 特徴
 
-Discord's game detection reads your Windows process list. It sees `TslGame.exe` and assumes you're playing PUBG. There is no technical mechanism in place to verify whether that process is the actual game or a renamed executable. The name is all it checks.
+**自動ゲーム検出** は、Discord の公式 API から最新の検出可能なゲームリストを取得します。名前や略称でゲームを検索でき、PUBG、LoL、CSGO などが見つかります。自動起動はすべてバックグラウンドで処理します。
 
-To detect this method, Discord would need kernel-level anti-cheat software comparable to Valorant's Vanguard deep system access, raised privacy concerns, a broken promise of being a lightweight chat app. That is not happening for cosmetic orb quests.
+**自己実行タイマー & 埋め込み設定** は、偽のゲームプロセス（スポーファー実行ファイルのリネームコピー）を作成し、ユーザーがダブルクリックするとカウントダウンタイマーを直接実行します。カスタム時間と自動削除設定はバイナリ内部に埋め込まれます。偽プロセスにはコンソールウィンドウが表示されません。
 
-**What this is not:** This tool does not inject code into Discord's console, modify client files, or send fake API requests. Those methods leave traces. Discord can detect when their JavaScript has been tampered with. Our approach leaves Discord's client completely untouched. The tool uses Discord's own public API to fetch the game list. No client modification. No integrity violations.
+**自動自己破壊 (`AUTO_DELETE`)** は、カウントダウンが終了するとバックグラウンドで偽の実行ファイル、親フォルダ、生成された Steam マニフェストをすべてクリーンアップします。
+
+**マルチゲーム対応** により、複数の偽プロセスを同時に実行して、すべてのオーブクエストを一度に完了できます。ゲームを起動し、Enter を押して別のゲームを選択し、必要なだけ繰り返します。各プロセスは独立して動作し、Discord はそれらすべてを検出します。
+
+**バックアップデータベース** は、Discord の API が利用できない場合に GitHub アーカイブにフォールバックするため、主要ソースが落ちていてもツールは動作を続けます。
+
+**マニュアルモード** は、データベースにないものをスポーフィングしたい場合にカスタム実行ファイル名の指定に対応します。
+
+**美しいインターフェース** は、読み込みアニメーション付きのカラー端末 UI です。プレーンなテキストよりも見やすくなっています。
 
 <br/>
 
-## Requirements
+## なぜこの方法が機能するのか
 
-Python 3.7 or higher, Windows only. Internet connection for database fetching. Discord must be running the spoofer only works when Discord is active and scanning processes.
+Discord のゲーム検出は Windows のプロセス一覧を読み取ります。`TslGame.exe` があれば PUBG をプレイしていると判断します。そのプロセスが実際のゲームか、リネームされた実行ファイルかを検証する技術的な仕組みはありません。Discord がチェックするのは名前だけです。
+
+この方法を検出するには、Discord は Valorant の Vanguard に匹敵するカーネルレベルのアンチチートを導入する必要があります。プライバシー問題や「軽量チャットアプリ」であるという約束の崩壊も伴います。見た目だけのオーブクエストにそこまでの対応がされることはありません。
+
+**これは何ではないか:** このツールは Discord のクライアントにコードを注入したり、ファイルを改変したり、偽の API リクエストを送信したりしません。そのような方法には痕跡が残ります。Discord は JavaScript が改ざんされた場合を検出できます。本アプローチでは Discord クライアントを完全に無改変のままにします。ツールは Discord の公開 API を使ってゲームリストを取得します。クライアント改変なし。整合性の侵害なし。
 
 <br/>
 
-## Installation
+## 必要条件
+
+Python 3.7 以上、Windows のみ対応。データベース取得にはインターネット接続が必要です。Discord が実行中で、Discord がプロセスをスキャンしている状態でのみスポーファーは動作します。
+
+<br/>
+
+## インストール
 
 ```bash
 git clone https://github.com/DanielPires2000/orbshacker.git
@@ -94,47 +94,47 @@ pip install -r requirements.txt
 
 <br/>
 
-## Usage
+## 使用方法
 
 ```bash
 python orbshacker.py
 ```
 
-Or via the package entry point:
+またはパッケージエントリポイントを使って:
 
 ```bash
 python -m orbshacker
 ```
 
-### Menu options
+### メニューの選択肢
 
-`1` Search Discord database by name or abbreviation
+`1` Discord データベースを名前または略称で検索
 
-`2` Manual mode, enter a custom executable name
+`2` マニュアルモード、カスタム実行ファイル名を入力
 
-`3` Steam special quest mode
+`3` Steam 特殊クエストモード
 
-`4` Credits and project info
+`4` クレジットとプロジェクト情報
 
-`5` Exit
+`5` 終了
 
-### Completing all quests in 15 minutes
+### 15分で全クエストを完了する
 
-Launch the tool. Select your first game. After the process is launched, press Enter to return to the main menu. Select another game. Repeat as many times as needed no need to open multiple windows. Every fake process runs in parallel. Discord detects all of them simultaneously. Wait 15 minutes. Close everything when done.
-
-<br/>
-
-## How it works
-
-The tool connects to Discord's official API (`/api/v9/applications/detectable`) to get the live game list. It extracts the exact process name Discord expects for each game. It copies the spoofer executable (or base Python interpreter in source mode) to the configured folder (defaults to `Desktop/Win64/`), renames it to match the game's executable name, and bakes the active configuration directly inside it.
-
-When the faked game executable runs, it acts as a standalone countdown timer with its settings embedded. When the countdown completes, it automatically triggers a background self-destruction script (if `AUTO_DELETE` is enabled) to delete the faked files and empty parent directories.
-
-Steam Quest Mode adds a layer: it generates a fake `appmanifest_<appid>.acf` in `steamapps/` and places the executable in `steamapps/common/<game>/`, satisfying Discord's additional manifest check for games like Marathon or Toxic Commando.
+ツールを起動します。最初のゲームを選択します。プロセスが起動したら Enter を押してメインメニューに戻ります。別のゲームを選択します。ウィンドウを複数開く必要はありません。すべての偽プロセスは並行して実行されます。Discord はそれらを同時に検出します。15分待って、完了したらすべて閉じてください。
 
 <br/>
 
-## Project Structure
+## 仕組み
+
+ツールは Discord の公式 API (`/api/v9/applications/detectable`) に接続してライブのゲームリストを取得します。Discord が各ゲームに対して期待する正確なプロセス名を抽出します。スポーファー実行ファイル（またはソースモードではベースの Python インタープリタ）を設定済みフォルダ（デフォルトは `Desktop/Win64/`）にコピーし、ゲームの実行ファイル名に合わせてリネームし、アクティブな設定を直接埋め込みます。
+
+偽のゲーム実行ファイルが動作すると、埋め込まれた設定付きのスタンドアロンのカウントダウンタイマーとして振る舞います。カウントダウンが終了すると、自動削除(`AUTO_DELETE` が有効な場合) 用のバックグラウンド自己破壊スクリプトが自動で起動し、偽ファイルと空の親ディレクトリを削除します。
+
+Steam Quest Mode はさらに一歩進み、`steamapps/` に偽の `appmanifest_<appid>.acf` を生成し、実行ファイルを `steamapps/common/<game>/` に配置します。これにより、Marathon や Toxic Commando のようなゲームで必要な追加のマニフェストチェックを満たします。
+
+<br/>
+
+## プロジェクト構成
 
 ```
 orbshacker/
@@ -160,39 +160,39 @@ orbshacker/
 
 <br/>
 
-## Configuration
+## 設定
 
-User-editable values live in `settings.py` at the project root. The file is loaded at startup and overrides any default from `orbshacker/config.py`. Runtime preferences and API timeouts go there. The application version comes from the git tag used for the build and is not user-configurable; changing it manually would break update detection.
-
-<br/>
-
-## Auto-updater
-
-When a new version tag is pushed, GitHub Actions builds a standalone Windows executable using PyInstaller and publishes it as a GitHub Release. The tool checks for updates on launch, downloads the new binary, swaps it in place, and restarts automatically. No Python installation needed to run the distributed executable.
+ユーザー編集可能な値はプロジェクトルートの `settings.py` にあります。起動時にこのファイルが読み込まれ、`orbshacker/config.py` のデフォルト設定を上書きします。ランタイムの設定や API タイムアウトはここで管理します。アプリケーションのバージョンはビルドに使用された git タグから取得されるため、手動変更は更新検出を壊す可能性があります。
 
 <br/>
 
-## Legal Notice
+## 自動アップデーター
 
-**Educational purposes only. No commercial use.**
-
-This tool is provided strictly for educational and research purposes to study how Discord's game detection system works and to explore process manipulation techniques. Commercial use, distribution, or sale is strictly prohibited.
-
-Users are solely responsible for compliance with all applicable laws, Discord's Terms of Service, and any other relevant agreements. The developers do not condone misuse and are not responsible for any consequences resulting from use of this software. No warranties or guarantees are provided. Use at your own risk.
-
-Misuse of this tool may violate Discord's Terms of Service.
+新しいバージョンタグがプッシュされると、GitHub Actions は PyInstaller を使ってスタンドアロンの Windows 実行ファイルをビルドし、GitHub Release として公開します。ツールは起動時に更新をチェックし、新しいバイナリをダウンロードして差し替え、自動的に再起動します。配布された実行ファイルを実行するのに Python インストールは不要です。
 
 <br/>
 
-## License
+## 法的注意
 
-GPL v3. Attribution required. Modified versions must also be GPL v3. Source code must be provided with any distribution. Commercial use is strictly prohibited. See [LICENSE](./LICENSE) for full terms.
+**教育目的のみ。商用利用禁止。**
+
+このツールは、Discord のゲーム検出システムの仕組みを学び、プロセス操作技術を調査するための教育および研究目的でのみ提供されています。商用利用、配布、販売は厳禁です。
+
+ユーザーは、適用されるすべての法律、Discord の利用規約、およびその他の関連契約を遵守する責任があります。開発者は悪用を容認せず、本ソフトウェアの使用に起因するいかなる結果についても責任を負いません。保証や保証は一切ありません。自己責任で使用してください。
+
+このツールの悪用は Discord の利用規約に違反する可能性があります。
+
+<br/>
+
+## ライセンス
+
+GPL v3。帰属表示が必要です。改変版も GPL v3 である必要があります。配布にはソースコードの提供が必要です。商用利用は厳禁です。詳細は [LICENSE](./LICENSE) を参照してください。
 
 <br/>
 
 <div align="center">
 
-made with questionable life choices by **Strykey**
+疑わしい人生の選択で作られました by **Strykey**
 
 <br/>
 
